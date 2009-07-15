@@ -6,12 +6,14 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
 
   # Provide an API that more closely matches that of dm's +has+ method.
   # Allow to declare +relationships+ inside the remixable module.
+  # Provide a readable and easy to understand codebase.
 
 == API ideas (not cut into stone at all)
 
   module Addressable
+    extend DataMapper::Remixable
     # This will use extlib/lazy_module to construct the remixable module
-    remixable :as => :addressable do # :as will default to :addressable
+    remixable :addressable do
       property :id,     Serial
       property :street, String
       has n, :phone_numbers
@@ -19,8 +21,9 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   end
 
   module Linkable
+    extend DataMapper::Remixable
     # This will use extlib/lazy_module to construct the remixable module
-    remixable :as => :linkable do # :as will default to :linkable
+    remixable :linkable do
       property :id,  Serial
       property :uri, URI
     end
@@ -157,7 +160,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   # Person.has n, :friends, :model => 'Person', :through => :friendships, :via => :other_person
   #
-  def remix(cardinality, relationship_name, options)
+  def remix(cardinality, relationship_name, *args)
     # TODO implement
   end
 
