@@ -1,14 +1,16 @@
 module DataMapper
   module Remixable
 
+    include Extlib::Assertions
+
     def remixable(name)
       assert_kind_of 'name', name, Symbol, String
       raise ArgumentError, "You need to pass a block to 'remixable'" unless block_given?
-      DataMapper::Remixable.descendants[name][:module] = LazyModule.new { yield }
+      (DataMapper::Remixable.descendants[name] ||= {})[:module] = LazyModule.new { yield }
     end
 
     def self.descendants
-      @descendants || = {}
+      @descendants ||= {}
     end
 
 
@@ -33,8 +35,8 @@ module DataMapper
         target_model_name ||= options.delete(:model)
 
         options = {
-          :target_key   => Extlib::Inflection.foreign_key(source_model_name)
-          :storage_name => Extlib::Inflection.tableize(target_model_name)
+          :target_key   => Extlib::Inflection.foreign_key(source_model_name),
+          :storage_name => Extlib::Inflection.tableize(target_model_name),
           :unique       => false
         }.merge!(options)
 
