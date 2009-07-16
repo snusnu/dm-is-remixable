@@ -5,7 +5,8 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
 == Goals
 
   # Provide an API that more closely matches that of dm's +has+ method.
-  # Allow to declare +relationships+ inside the remixable module.
+  # Allow to pass additional query options to the generated relationships to/through remixables
+  # Allow to declare relationships inside the remixable module.
   # Allow to declare class methods and instance methods in the remixable module
   # Rework remixing a module as intermediary for a m:m relationship
   # Provide a readable and easy to understand codebase.

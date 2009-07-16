@@ -4,10 +4,10 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "dm-remixables"
+    gem.name = "dm-remixable"
     gem.summary = %Q{TODO}
     gem.email = "gamsnjaga@gmail.com"
-    gem.homepage = "http://github.com/snusnu/dm-remixables"
+    gem.homepage = "http://github.com/snusnu/dm-remixable"
     gem.authors = ["snusnu"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
@@ -41,7 +41,7 @@ Rake::RDocTask.new do |rdoc|
   end
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "dm-remixables #{version}"
+  rdoc.title = "dm-remixable #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

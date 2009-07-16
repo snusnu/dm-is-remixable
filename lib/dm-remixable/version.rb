@@ -1,5 +1,5 @@
 module DataMapper
-  module Remixables
+  module Remixable
     VERSION = '0.10.0'.freeze
   end
 end
