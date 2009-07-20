@@ -79,7 +79,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   # @example 1:1 remixable with default naming conventions
   #
-  #   Person.remix 1, :address, :model => 'PersonAddress', :remixable => :addressable
+  #   Person.remix 1, :address, 'PersonAddress', :remixable => :addressable
   #
   #   1) Defines the PersonAddress model and includes the Addressable module.
   #   2) Establishes the following relationships on the participating models.
@@ -91,7 +91,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   # @example 1:1 remixable with explicit options
   #
-  #   Person.remix 1, :address, :model => 'PersonAddress',
+  #   Person.remix 1, :address, 'PersonAddress',
   #     :remixable  => :addressable,
   #     :target_key => [:human_id]
   #
@@ -105,7 +105,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   # @example 1:m remixables with default naming conventions
   #
-  #   Person.remix n, :addresses, :model => 'PersonAddress', :remixable => :addressable
+  #   Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable
   #
   #   1) Defines the PersonAddress model and includes the Addressable module.
   #   2) Establishes the following relationships on the participating models.
@@ -117,7 +117,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   # @example 1:m remixables with explicit options
   #
-  #   Person.remix n, :addresses, :model => 'PersonAddress',
+  #   Person.remix n, :addresses, 'PersonAddress',
   #     :remixable  => :addressable,
   #     :target_key => [:human_id]
   #
@@ -131,7 +131,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   # @example m:m through remixable with default naming conventions
   #
-  #   Person.remix n, :references, :model => 'Link', :through => :linkable
+  #   Person.remix n, :references, 'Link', :through => :linkable
   #
   #   1) Defines the PersonReference model and includes the Linkable module.
   #   2) Establishes the following relationships on the participating models.
@@ -148,7 +148,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   # @example m:m through remixable with explicit options
   #
-  #   Person.remix n, :references, :model => 'Link',
+  #   Person.remix n, :references, 'Link',
   #     :through => [ :person_references, {
   #       :remixable  => :linkable,
   #       :model      => 'PersonReferenceLink', # defaults to 'PersonReference'
@@ -172,7 +172,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   # @example self referential m:m through remixable (probably needs more work)
   #
-  #   Person.remix n, :friends, :model => 'Person',
+  #   Person.remix n, :friends, 'Person',
   #     :through => [ :social_contacts, {
   #       :remixable  => :social_contact,
   #       :model      => 'Friendship',      # defaults to 'PersonReference'
