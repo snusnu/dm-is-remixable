@@ -1,4 +1,4 @@
-= dm-remixable
+= dm-is-remixable
 
 A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/dm-is-remixable] gem by Cory O'Daniel.
 
@@ -14,26 +14,55 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
 == API ideas (not cut into stone at all, but promising)
 
   module Addressable
-    extend DataMapper::Remixable
-    remixable :addressable do
-      property :id,     Serial
-      property :street, String
-      has n, :phone_numbers
-    end
+
+    extend DataMapper::Model
+
+    is :remixable
+
+    property :id,      Serial
+    property :address, String, :nullable => false
+
+    belongs_to :country
+    has n, :phone_numbers
+
   end
 
   module Linkable
-    extend DataMapper::Remixable
-    remixable :linkable do
-      property :id,  Serial
-      property :uri, URI
-    end
+
+    extend DataMapper::Model
+
+    is :remixable
+
+    property :id,  Serial
+    property :uri, URI
+
+  end
+
+  class Country
+
+    include DataMapper::Resource
+
+    property :id,   Serial
+    property :name, String
+
+  end
+
+  class PhoneNumber
+
+    include DataMapper::Resource
+
+    property :id,     Serial
+    property :number, String
+
   end
 
   class Person
+
     include DataMapper::Resource
+
     property :id,   Serial
     property :name, String
+
   end
 
   #

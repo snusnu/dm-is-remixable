@@ -2,7 +2,7 @@ require 'pathname'
 require 'rubygems'
 require 'rake'
 
-GEM_NAME = 'dm-remixable'
+GEM_NAME = 'dm-is-remixable'
 
 ROOT = Pathname(__FILE__).dirname.expand_path
 JRUBY = RUBY_PLATFORM =~ /java/
@@ -15,7 +15,7 @@ begin
     gem.name     = GEM_NAME
     gem.summary  = "A rewrite of dm-is-remixable that tries to feel more dm'ish and adds desired behavior"
     gem.email    = "gamsnjaga@gmail.com"
-    gem.homepage = "http://github.com/snusnu/dm-remixable"
+    gem.homepage = "http://github.com/snusnu/dm-is-remixable"
     gem.authors  = ["Martin Gamsjaeger (snusnu)"]
     gem.add_dependency('dm-core', '>= 0.10.0')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
@@ -29,14 +29,14 @@ begin
   gem 'rspec', '>=1.1.12'
   require 'spec'
   require 'spec/rake/spectask'
- 
+
   task :default => [ :spec ]
- 
+
   desc 'Run specifications'
   Spec::Rake::SpecTask.new(:spec) do |t|
     t.spec_opts << '--options' << 'spec/spec.opts' if File.exists?('spec/spec.opts')
     t.spec_files = Pathname.glob((ROOT + 'spec/**/*_spec.rb').to_s).map { |f| f.to_s }
- 
+
     begin
       gem 'rcov', '~>0.8'
       t.rcov = JRUBY ? false : (ENV.has_key?('NO_RCOV') ? ENV['NO_RCOV'] != 'true' : true)

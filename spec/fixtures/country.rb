@@ -1,4 +1,4 @@
-class Person
+class Country
 
   include DataMapper::Resource
 

@@ -11,15 +11,17 @@ end
 
 
 module DataMapper
-  module Remixable
+  module Is
+    module Remixable
 
-    module Support
+      module Support
 
-      def is_remixable?
-        @is_remixable || false
+        def is_remixable?
+          @is_remixable || false
+        end
+
       end
 
     end
-
   end
 end

@@ -1,8 +1,13 @@
 module Addressable
-  extend DataMapper::Remixable
-  remixable :addressable do
-    property :id,     Serial
-    property :street, String
-    has n, :phone_numbers
-  end
+
+  extend DataMapper::Model
+
+  is :remixable
+
+  property :id,      Serial
+  property :address, String, :nullable => false
+
+  belongs_to :country
+  has n, :phone_numbers
+
 end

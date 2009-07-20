@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{dm-remixable}
-  s.version = "0.0.1"
+  s.name = %q{dm-is-remixable}
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Martin Gamsjaeger (snusnu)"]
-  s.date = %q{2009-07-16}
+  s.date = %q{2009-07-20}
   s.email = %q{gamsnjaga@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -18,26 +18,29 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README.rdoc",
      "Rakefile",
-     "lib/dm-remixable.rb",
-     "lib/dm-remixable/remixable.rb",
-     "lib/dm-remixable/support.rb",
-     "lib/dm-remixable/version.rb",
+     "VERSION",
+     "dm-remixable.gemspec",
      "spec/fixtures/addressable.rb",
+     "spec/fixtures/country.rb",
      "spec/fixtures/linkable.rb",
      "spec/fixtures/person.rb",
+     "spec/fixtures/phone_number.rb",
      "spec/integration/remixable_spec.rb",
      "spec/spec.opts",
-     "spec/spec_helper.rb"
+     "spec/spec_helper.rb",
+     "tasks/changelog.rb"
   ]
-  s.homepage = %q{http://github.com/snusnu/dm-remixable}
+  s.homepage = %q{http://github.com/snusnu/dm-is-remixable}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.4}
   s.summary = %q{A rewrite of dm-is-remixable that tries to feel more dm'ish and adds desired behavior}
   s.test_files = [
     "spec/fixtures/addressable.rb",
+     "spec/fixtures/country.rb",
      "spec/fixtures/linkable.rb",
      "spec/fixtures/person.rb",
+     "spec/fixtures/phone_number.rb",
      "spec/integration/remixable_spec.rb",
      "spec/spec_helper.rb"
   ]
