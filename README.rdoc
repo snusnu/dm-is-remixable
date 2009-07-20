@@ -91,8 +91,9 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   # @example 1:1 remixable with explicit options
   #
-  #   Person.remix 1, :address, :model => 'PersonAddress'
-  #     :remixable => [ :addressable, { :target_key => [:human_id] } ]
+  #   Person.remix 1, :address, :model => 'PersonAddress',
+  #     :remixable  => :addressable,
+  #     :target_key => [:human_id]
   #
   #   1) Defines the PersonAddress model and includes the Addressable module.
   #   2) Establishes the following relationships on the participating models.
@@ -117,7 +118,8 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   # @example 1:m remixables with explicit options
   #
   #   Person.remix n, :addresses, :model => 'PersonAddress',
-  #     :remixable => [ :addressable, { :target_key => [:human_id] } ]
+  #     :remixable  => :addressable,
+  #     :target_key => [:human_id]
   #
   #   1) Defines the PersonAddress model and includes the Addressable module.
   #   2) Establishes the following relationships on the participating models.

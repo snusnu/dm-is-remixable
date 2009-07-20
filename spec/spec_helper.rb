@@ -50,4 +50,8 @@ module RemixableHelper
     end
   end
 
+  def n
+    1.0/0
+  end
+
 end

@@ -73,18 +73,18 @@ module DataMapper
 
         private
 
-        # TODO support CPKs
         def remix_target_model(cardinality, target_relationship_name, target_model_name, options)
 
           source_model = self
           target_model = remixable_model(target_model_name, options.delete(:remixable))
+          target_key   = options[:target_key].first.to_sym # TODO think about supporting CPKs if possible
 
           if options.delete(:unique)
-            target_model.property options[:target_key], Integer, :nullable => false, :unique => true, :unique_index => true
+            target_model.property target_key, Integer, :nullable => false, :unique => true, :unique_index => true
           end
 
-          source = source_model.name.snake_case.to_sym
-          target_model.belongs_to source, source_model, :source_key => options[:target_key]
+          source = target_key.to_s.gsub('_id', '').to_sym
+          target_model.belongs_to source, source_model, :source_key => target_key
           source_model.has cardinality, target_relationship_name, target_model, options
 
         end
