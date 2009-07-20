@@ -25,7 +25,8 @@ Gem::Specification.new do |s|
      "spec/fixtures/linkable.rb",
      "spec/fixtures/person.rb",
      "spec/fixtures/phone_number.rb",
-     "spec/integration/remixable_spec.rb",
+     "spec/integration/remix_target_spec.rb",
+     "spec/integration/remix_intermediate_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "tasks/changelog.rb"
@@ -36,12 +37,13 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.4}
   s.summary = %q{A rewrite of dm-is-remixable that tries to feel more dm'ish and adds desired behavior}
   s.test_files = [
-    "spec/fixtures/addressable.rb",
+     "spec/fixtures/addressable.rb",
      "spec/fixtures/country.rb",
      "spec/fixtures/linkable.rb",
      "spec/fixtures/person.rb",
      "spec/fixtures/phone_number.rb",
-     "spec/integration/remixable_spec.rb",
+     "spec/integration/remix_target_spec.rb",
+     "spec/integration/remix_intermediate_spec.rb",
      "spec/spec_helper.rb"
   ]
 
