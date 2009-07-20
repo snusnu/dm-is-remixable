@@ -181,6 +181,10 @@ module DataMapper
 
           if options.key?(:through)
             assert_kind_of 'options[:through]', options[:through], Symbol, Module, Enumerable
+            if options[:through].respond_to?(:size)
+              msg = 'options[:through] must either be Symbol, Module or an Enumerable with 2 elements'
+              raise ArgumentError, msg unless options[:through].size == 2
+            end
           end
 
           [ :via, :inverse ].each do |key|
