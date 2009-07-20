@@ -18,7 +18,7 @@ module DataMapper
 
         %w(property belongs_to has).each do |name|
 
-          class_eval <<-RUBY
+          class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def #{name}(*args)             # def property(*args)
               #{name}_declarations << args #   property_declarations << args
             end                            # end
