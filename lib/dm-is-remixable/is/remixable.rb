@@ -79,7 +79,7 @@ module DataMapper
           target_model = remixable_model(target_model_name, options.delete(:remixable))
           target_key   = options[:target_key].first.to_sym # TODO think about supporting CPKs if possible
 
-          if options.delete(:unique)
+          if options.delete(:unique) || cardinality == 1
             target_model.property target_key, Integer, :nullable => false, :unique => true, :unique_index => true
           end
 
