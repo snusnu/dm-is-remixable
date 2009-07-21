@@ -99,7 +99,7 @@ module DataMapper
           case through = options[:through]
           when Symbol
             intermediate_name       = "#{self.name.snake_case}_#{target_relationship_name}".to_sym
-            intermediate_model_name = "#{self.name}#{target_relationship_name.to_s.singular_camel_case}"
+            intermediate_model_name = "#{self.name}#{target_relationship_name.to_s.singular.camel_case}"
             intermediate_source_key = default_intermediate_source_key
             intermediate_target_key = default_intermediate_target_key
             remixable               = through
