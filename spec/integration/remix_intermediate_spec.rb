@@ -1,5 +1,22 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+describe "every intermediate model remix", :shared => true do
+
+  it "should establish all the remixable's properties in the remixed intermediate model" do
+    PersonReference.properties.named?(:id        ).should be_true
+    PersonReference.properties.named?(:created_at).should be_true
+    PersonReference.properties.named?(:updated_at).should be_true
+  end
+
+  it "should establish a m:m relationship from the remixer to the target model through the remixed intermediate model" do
+    relationship = Person.relationships(:default)[:references]
+    relationship.kind_of?(DataMapper::Associations::ManyToMany::Relationship).should be_true
+    relationship.through.name.should == :person_references
+    relationship.target_model.should == Link
+  end
+
+end
+
 describe '[dm-is-remixable]' do
 
   include RemixableHelper
@@ -16,6 +33,7 @@ describe '[dm-is-remixable]' do
     end
 
     it_should_behave_like 'every remixable'
+    it_should_behave_like 'every intermediate model remix'
 
     it "should establish m:1 relationships to both source and target in the remixed intermediate model" do
       source = PersonReference.relationships(:default)[:person]
@@ -30,13 +48,6 @@ describe '[dm-is-remixable]' do
       relationship = Person.relationships(:default)[:person_references]
       relationship.kind_of?(DataMapper::Associations::OneToMany::Relationship).should be_true
       relationship.target_model.should == PersonReference
-    end
-
-    it "should establish a m:m relationship from the remixer to the target model through the remixed intermediate model" do
-      relationship = Person.relationships(:default)[:references]
-      relationship.kind_of?(DataMapper::Associations::ManyToMany::Relationship).should be_true
-      relationship.through.name.should == :person_references
-      relationship.target_model.should == Link
     end
 
   end
@@ -62,6 +73,7 @@ describe '[dm-is-remixable]' do
     end
 
     it_should_behave_like 'every remixable'
+    it_should_behave_like 'every intermediate model remix'
 
     it "should establish m:1 relationships to both source and target in the remixed intermediate model" do
       source = PersonReferenceLink.relationships(:default)[:human    ]
@@ -76,13 +88,6 @@ describe '[dm-is-remixable]' do
       relationship = Person.relationships(:default)[:person_references]
       relationship.kind_of?(DataMapper::Associations::OneToMany::Relationship).should be_true
       relationship.target_model.should == PersonReferenceLink
-    end
-
-    it "should establish a m:m relationship from the remixer to the target model through the remixed intermediate model" do
-      relationship = Person.relationships(:default)[:references]
-      relationship.kind_of?(DataMapper::Associations::ManyToMany::Relationship).should be_true
-      relationship.through.name.should == :person_references
-      relationship.target_model.should == Link
     end
 
   end
