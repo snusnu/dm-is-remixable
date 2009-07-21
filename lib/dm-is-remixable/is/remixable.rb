@@ -16,7 +16,9 @@ module DataMapper
 
       module Remixee
 
-        %w(property belongs_to has).each do |name|
+        SHIMS = %w(property belongs_to has remix)
+
+        SHIMS.each do |name|
 
           class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def #{name}(*args)             # def property(*args)
@@ -73,11 +75,12 @@ module DataMapper
 
         private
 
+        # TODO think about supporting CPKs
         def remix_target_model(cardinality, target_relationship_name, target_model_name, options)
 
           source_model = self
           target_model = remixable_model(target_model_name, options.delete(:remixable))
-          target_key   = options[:target_key].first.to_sym # TODO think about supporting CPKs if possible
+          target_key   = options[:target_key].first.to_sym
 
           if options.delete(:unique) || cardinality == 1
             target_model.property target_key, Integer, :nullable => false, :unique => true, :unique_index => true
@@ -89,7 +92,7 @@ module DataMapper
 
         end
 
-        # TODO finish rewrite
+        # TODO think about supporting CPKs
         def remix_intermediate_model(cardinality, target_relationship_name, target_model_name, options)
 
           source_model                    = self
@@ -160,16 +163,16 @@ module DataMapper
             include remixable_module
           end
 
-          model_class = Object.full_const_set(model_name, klass)
+          model = Object.full_const_set(model_name, klass)
 
-          # replay properties and relationships
-          remixable_module.property_declarations.each   { |args| model_class.property   *args }
-          remixable_module.belongs_to_declarations.each { |args| model_class.belongs_to *args }
-          remixable_module.has_declarations.each        { |args| model_class.has        *args }
+          Remixee::SHIMS.each do |name|
+            # install collected properties, relationships and remixes in the remixed model
+            remixable_module.send("#{name}_declarations").each { |args| model.send(name, *args) }
+          end
 
           DataMapper.logger.info "Generated Remixable Model: #{model_name}"
 
-          model_class
+          model
 
         end
 
