@@ -9,6 +9,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   # Allow to declare relationships inside the remixable module.
   # Allow to declare class methods and instance methods in the remixable module
   # Rework remixing a module as intermediary for a m:m relationship
+  # Allow remixing a parent model (i.e. the remixer belongs_to the remixed model)
   # Provide a readable and easy to understand codebase.
 
 == API ideas (not cut into stone at all, but promising)
