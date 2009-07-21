@@ -54,8 +54,8 @@ describe '[dm-is-remixable]' do
         :through => [ :person_references, {
           :remixable  => :linkable,
           :model      => 'PersonReferenceLink',
-          :source_key => [:human_id],          
-          :target_key => [:reference_id]       
+          :source_key => [:human_id],
+          :target_key => [:reference_id]
         }]
 
       Person.auto_migrate!
