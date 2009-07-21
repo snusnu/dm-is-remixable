@@ -1,22 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe "every remixed intermediate model", :shared => true do
-
-
-
-end
-
-describe "every m:m remix", :shared => true do
-
-
-
-end
-
-describe DataMapper::Is::Remixable::Remixer do
+describe '[dm-is-remixable]' do
 
   include RemixableHelper
 
-  describe "Person.remix n, :references, 'Link', :remixable => :linkable" do
+  describe "Remixing an intermediate model with default options" do
 
     before(:all) do
       clear_remixed_models 'PersonReference'
@@ -30,9 +18,12 @@ describe DataMapper::Is::Remixable::Remixer do
     it_should_behave_like 'every remixable'
 
     it "should establish m:1 relationships to both source and target in the remixed intermediate model" do
-      relationships = PersonReference.relationships(:default)
-      relationships[:person].kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
-      relationships[:link  ].kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
+      source = PersonReference.relationships(:default)[:person]
+      target = PersonReference.relationships(:default)[:link  ]
+      source.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
+      target.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
+      source.target_model.should == Person
+      target.target_model.should == Link
     end
 
     it "should establish a 1:m relationship from the remixer to the remixed intermediate model" do
@@ -51,7 +42,7 @@ describe DataMapper::Is::Remixable::Remixer do
   end
 
 
-  describe "Person.remix n, :references, 'Link', :remixable => :linkable" do
+  describe "Remixing an intermediate model with customized options" do
 
     before(:all) do
       clear_remixed_models 'PersonReferenceLink'

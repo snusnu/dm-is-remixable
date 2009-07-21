@@ -42,11 +42,11 @@ end
 # ----------------------------------------------------------------------------------------------------------
 
 
-describe DataMapper::Is::Remixable::Remixer do
+describe '[dm-is-remixable]' do
 
   include RemixableHelper
 
-  describe "Person.remix 1, :address, 'PersonAddress', :remixable => :addressable" do
+  describe "Remixing '1' target model with default options" do
 
     before(:all) do
       clear_remixed_models 'PersonAddress'
@@ -77,7 +77,7 @@ describe DataMapper::Is::Remixable::Remixer do
   # ----------------------------------------------------------------------------------------------------------
 
 
-  describe "Person.remix 1, :address, 'PersonAddress', :remixable => :addressable, :target_key => [:human_id]" do
+  describe "Remixing '1' target model with customized options" do
 
     before(:all) do
       clear_remixed_models 'PersonAddress'
@@ -106,66 +106,57 @@ describe DataMapper::Is::Remixable::Remixer do
   # ----------------------------------------------------------------------------------------------------------
   # ----------------------------------------------------------------------------------------------------------
 
+  describe "Remixing 'n' target models with default options" do
 
-  describe DataMapper::Is::Remixable::Remixer do
-
-    include RemixableHelper
-
-    describe "Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable" do
-
-      before(:all) do
-        clear_remixed_models 'PersonAddress'
-        @source_model       = Person
-        @remixed_model_name = 'PersonAddress'
-        Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable
-        Person.auto_migrate!
-      end
-
-      it_should_behave_like 'every remixable'
-      it_should_behave_like 'every remixed target model'
-      it_should_behave_like 'every 1:m remix'
-
-      it "should establish all implicitly defined properties in the remixed model" do
-        PersonAddress.properties.named?(:person_id).should  be_true
-      end
-
-      it "should establish a m:1 relationship from the remixed model to the remixer" do
-        relationship = PersonAddress.relationships(:default)[:person]
-        relationship.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
-        relationship.target_model.should == Person
-      end
-
+    before(:all) do
+      clear_remixed_models 'PersonAddress'
+      @source_model       = Person
+      @remixed_model_name = 'PersonAddress'
+      Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable
+      Person.auto_migrate!
     end
 
+    it_should_behave_like 'every remixable'
+    it_should_behave_like 'every remixed target model'
+    it_should_behave_like 'every 1:m remix'
 
-    # ----------------------------------------------------------------------------------------------------------
-    # ----------------------------------------------------------------------------------------------------------
+    it "should establish all implicitly defined properties in the remixed model" do
+      PersonAddress.properties.named?(:person_id).should  be_true
+    end
 
+    it "should establish a m:1 relationship from the remixed model to the remixer" do
+      relationship = PersonAddress.relationships(:default)[:person]
+      relationship.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
+      relationship.target_model.should == Person
+    end
 
-    describe "Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable, :target_key => [:human_id]" do
+  end
 
-      before(:all) do
-        clear_remixed_models 'PersonAddress'
-        @source_model       = Person
-        @remixed_model_name = 'PersonAddress'
-        Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable, :target_key => [:human_id]
-        Person.auto_migrate!
-      end
+  # ----------------------------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------------------------------------
 
-      it_should_behave_like 'every remixable'
-      it_should_behave_like 'every remixed target model'
-      it_should_behave_like 'every 1:m remix'
+  describe "Remixing 'n' target models with customized options" do
 
-      it "should establish all implicitly defined properties in the remixed model" do
-        PersonAddress.properties.named?(:human_id).should  be_true
-      end
+    before(:all) do
+      clear_remixed_models 'PersonAddress'
+      @source_model       = Person
+      @remixed_model_name = 'PersonAddress'
+      Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable, :target_key => [:human_id]
+      Person.auto_migrate!
+    end
 
-      it "should establish a m:1 relationship from the remixed model to the remixer" do
-        relationship = PersonAddress.relationships(:default)[:human]
-        relationship.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
-        relationship.target_model.should == Person
-      end
+    it_should_behave_like 'every remixable'
+    it_should_behave_like 'every remixed target model'
+    it_should_behave_like 'every 1:m remix'
 
+    it "should establish all implicitly defined properties in the remixed model" do
+      PersonAddress.properties.named?(:human_id).should  be_true
+    end
+
+    it "should establish a m:1 relationship from the remixed model to the remixer" do
+      relationship = PersonAddress.relationships(:default)[:human]
+      relationship.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
+      relationship.target_model.should == Person
     end
 
   end

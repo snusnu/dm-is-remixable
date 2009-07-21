@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Martin Gamsjaeger (snusnu)"]
-  s.date = %q{2009-07-20}
+  s.date = %q{2009-07-21}
   s.email = %q{gamsnjaga@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -19,16 +19,23 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
-     "dm-remixable.gemspec",
+     "dm-is-remixable.gemspec",
+     "lib/dm-is-remixable.rb",
+     "lib/dm-is-remixable/is/remixable.rb",
+     "lib/dm-is-remixable/is/support.rb",
+     "lib/dm-is-remixable/is/version.rb",
      "spec/fixtures/addressable.rb",
      "spec/fixtures/country.rb",
+     "spec/fixtures/link.rb",
      "spec/fixtures/linkable.rb",
      "spec/fixtures/person.rb",
      "spec/fixtures/phone_number.rb",
-     "spec/integration/remix_target_spec.rb",
      "spec/integration/remix_intermediate_spec.rb",
+     "spec/integration/remix_target_spec.rb",
+     "spec/shared/every_remixable_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
+     "spec/unit/remixable_spec.rb",
      "tasks/changelog.rb"
   ]
   s.homepage = %q{http://github.com/snusnu/dm-is-remixable}
@@ -37,14 +44,17 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.4}
   s.summary = %q{A rewrite of dm-is-remixable that tries to feel more dm'ish and adds desired behavior}
   s.test_files = [
-     "spec/fixtures/addressable.rb",
+    "spec/fixtures/addressable.rb",
      "spec/fixtures/country.rb",
+     "spec/fixtures/link.rb",
      "spec/fixtures/linkable.rb",
      "spec/fixtures/person.rb",
      "spec/fixtures/phone_number.rb",
-     "spec/integration/remix_target_spec.rb",
      "spec/integration/remix_intermediate_spec.rb",
-     "spec/spec_helper.rb"
+     "spec/integration/remix_target_spec.rb",
+     "spec/shared/every_remixable_spec.rb",
+     "spec/spec_helper.rb",
+     "spec/unit/remixable_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
