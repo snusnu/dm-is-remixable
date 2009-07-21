@@ -129,8 +129,8 @@ module DataMapper
 
           # establish relationships to intermediate and target model
 
-          self.has cardinality, intermediate_name, remixable_model, options
-          self.has cardinality, relationship_name, target_model_name, :through => remixable_model
+          self.has cardinality, intermediate_name, intermediate_model, options
+          self.has cardinality, target_relationship_name, target_model_name, :through => intermediate_name
 
           # TODO think about establishing the inverse m:m too
 
