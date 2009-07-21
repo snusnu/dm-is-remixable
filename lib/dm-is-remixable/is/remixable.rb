@@ -96,7 +96,7 @@ module DataMapper
           default_intermediate_source_key = Extlib::Inflection.foreign_key(source_model.name)
           default_intermediate_target_key = Extlib::Inflection.foreign_key(target_model_name)
 
-          case through = options[:through]
+          case through = options.delete(:through)
           when Symbol
             intermediate_name       = "#{self.name.snake_case}_#{target_relationship_name}".to_sym
             intermediate_model_name = "#{self.name}#{target_relationship_name.to_s.singular.camel_case}"
@@ -106,8 +106,8 @@ module DataMapper
           when Array
             intermediate_name       = through.first
             intermediate_model_name = through.last[:model]
-            intermediate_source_key = through.last[:source_key] || default_intermediate_source_key
-            intermediate_target_key = through.last[:target_key] || default_intermediate_target_key
+            intermediate_source_key = through.last[:source_key].first.to_s || default_intermediate_source_key
+            intermediate_target_key = through.last[:target_key].first.to_s || default_intermediate_target_key
             remixable               = through.last[:remixable]
           else
             raise ArgumentError, '+options[:through]+ must either be a Symbol or an Array'
@@ -124,8 +124,8 @@ module DataMapper
             intermediate_model.property intermediate_target_key.to_sym, Integer, :nullable => false, :key => true
           end
 
-          intermediate_model.belongs_to intermediate_source
-          intermediate_model.belongs_to intermediate_target
+          intermediate_model.belongs_to intermediate_source, source_model
+          intermediate_model.belongs_to intermediate_target, target_model_name
 
           # establish relationships to intermediate and target model
 
