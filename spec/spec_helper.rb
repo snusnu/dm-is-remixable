@@ -12,8 +12,8 @@ require 'dm-constraints'
 require 'dm-types'
 
 ENV["SQLITE3_SPEC_URI"]  ||= 'sqlite3::memory:'
-ENV["MYSQL_SPEC_URI"]    ||= 'mysql://localhost/dm-remixable_test'
-ENV["POSTGRES_SPEC_URI"] ||= 'postgres://postgres@localhost/dm-remixable_test'
+ENV["MYSQL_SPEC_URI"]    ||= 'mysql://localhost/dm-is-remixable_test'
+ENV["POSTGRES_SPEC_URI"] ||= 'postgres://postgres@localhost/dm-is-remixable_test'
 
 
 def setup_adapter(name, default_uri = nil)
@@ -30,7 +30,7 @@ def setup_adapter(name, default_uri = nil)
   end
 end
 
-ENV['ADAPTER'] ||= 'sqlite3'
+ENV['ADAPTER'] ||= 'mysql'
 setup_adapter(:default)
 
 spec_dir = Pathname(__FILE__).dirname.to_s
