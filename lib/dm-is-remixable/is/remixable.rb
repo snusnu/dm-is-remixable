@@ -5,7 +5,7 @@ module DataMapper
       include Extlib::Assertions
 
       def is_remixable
-        class << self; self end.send(:include, Remixee)
+        extend Remixee
         name = Extlib::Inflection.demodulize(self.name).snake_case.to_sym
         (Remixable.descendants[name] ||= {})[:module] = self
       end
