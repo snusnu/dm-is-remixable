@@ -2,6 +2,10 @@ module DataMapper
   module Is
     module Remixable
 
+      class DuplicateRemixTarget < ArgumentError; end
+      class InvalidRemixable     < ArgumentError; end
+      class InvalidOptions       < ArgumentError; end
+
       include Extlib::Assertions
 
       def is_remixable
@@ -50,7 +54,7 @@ module DataMapper
           assert_valid_options_for_remix(options)
 
           if options.key?(:model) && target_model_name
-            raise ArgumentError, 'should not specify options[:model] if passing the model in the third argument'
+            raise InvalidOptions, 'should not specify options[:model] if passing the model in the third argument'
           end
 
           target_model_name ||= options.delete(:model)
@@ -139,7 +143,7 @@ module DataMapper
         def remixable_model(model_name, remixable)
 
           if Object.full_const_defined?(model_name)
-            raise ArgumentError, "The model to remix (#{model_name}) already exists"
+            raise DuplicateRemixTarget, "The model to remix (#{model_name}) already exists"
           end
 
           case remixable
@@ -149,10 +153,10 @@ module DataMapper
             remixable_config = DataMapper::Is::Remixable.descendants[remixable]
             remixable_module = remixable_config[:module] if remixable_config
           else
-            raise ArgumentError, 'remixable must either be a Symbol or a Module'
+            raise InvalidRemixable, 'remixable must either be a Symbol or a Module'
           end
 
-          raise ArgumentError, "The module #{remixable} is not remixable" unless remixable_module
+          raise InvalidRemixable, "The module #{remixable} is not remixable" unless remixable_module
 
           klass = Class.new do
             include DataMapper::Resource
@@ -182,7 +186,7 @@ module DataMapper
             assert_kind_of 'options[:through]', options[:through], Symbol, Module, Enumerable
             if options[:through].respond_to?(:size)
               msg = 'options[:through] must either be Symbol, Module or an Enumerable with 2 elements'
-              raise ArgumentError, msg unless options[:through].size == 2
+              raise InvalidOptions, msg unless options[:through].size == 2
             end
           end
 

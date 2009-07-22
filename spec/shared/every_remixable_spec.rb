@@ -9,7 +9,7 @@ describe "every remixable", :shared => true do
   end
 
   it "should raise when trying to remix the same model more than once" do
-    lambda { 2.times { @remix_lambda.call() } }.should raise_error
+    lambda { 2.times { @remix_lambda.call() } }.should raise_error(DataMapper::Is::Remixable::DuplicateRemixTarget)
   end
 
 end
