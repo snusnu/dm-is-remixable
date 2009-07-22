@@ -4,18 +4,20 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
 
 == Features
 
-  # API that more closely matches that of datamapper's[http://github.com/datamapper/dm-core] +has+ method.
+  # API that closely matches that of datamapper's +has+ method.
   # Relationships can be declared directly inside the remixable module.
   # Full support for remixing a module as intermediary m:m relationships (multiple times in the same class)
   # A readable and easy to understand codebase.
 
-== Goals
+== Goals (in no particular order)
 
   # Allow to pass additional query options to the generated relationships to/through remixables
-  # Allow to declare class methods and instance methods in the remixable module
+  # Think about how best to include/extend functionality into the remixed model
+  # Think about how best to include/extend functionality into the remixing model
   # Allow to remix other remixables inside the remixable module
   # Allow remixing a parent model (i.e. the remixer belongs_to the remixed model)
   # Add back support for enhance (although it shouldn't be needed that often)
+  # Awesome API docs
 
 == API ideas (not cut into stone, but promising)
 
