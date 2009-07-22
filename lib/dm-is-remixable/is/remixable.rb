@@ -139,9 +139,7 @@ module DataMapper
         def remixable_model(model_name, remixable)
 
           if Object.full_const_defined?(model_name)
-            model = Object.full_const_get(model_name)
-            raise ArgumentError, "#{model} is not remixable" unless model.is_remixable?
-            model
+            Object.full_const_get(model_name) rescue false
           else
             generate_remixable_model(model_name, remixable)
           end
@@ -160,7 +158,7 @@ module DataMapper
             raise ArgumentError, 'remixable must either be a Symbol or a Module'
           end
 
-          raise ArgumentError, "#{remixable} is not remixable" unless remixable_module
+          raise ArgumentError, "The module #{remixable} is not remixable" unless remixable_module
 
           klass = Class.new do
             include DataMapper::Resource

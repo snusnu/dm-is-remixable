@@ -107,7 +107,9 @@ describe '[dm-is-remixable]' do
       clear_remixed_models 'PersonAddress'
       @source_model       = Person
       @remixed_model_name = 'PersonAddress'
-      Person.remix 1, :address, 'PersonAddress', :remixable => :addressable
+      (@remix_lambda       = lambda {
+        Person.remix 1, :address, 'PersonAddress', :remixable => :addressable
+      }).call()
       Person.auto_migrate!
     end
 
@@ -124,7 +126,9 @@ describe '[dm-is-remixable]' do
       clear_remixed_models 'PersonAddress'
       @source_model       = Person
       @remixed_model_name = 'PersonAddress'
-      Person.remix 1, :address, 'PersonAddress', :remixable => Addressable
+      (@remix_lambda       = lambda {
+        Person.remix 1, :address, 'PersonAddress', :remixable => Addressable
+      }).call()
       Person.auto_migrate!
     end
 
@@ -144,7 +148,9 @@ describe '[dm-is-remixable]' do
       clear_remixed_models 'PersonAddress'
       @source_model       = Person
       @remixed_model_name = 'PersonAddress'
-      Person.remix 1, :address, 'PersonAddress', :remixable => :addressable, :target_key => [:human_id]
+      (@remix_lambda       = lambda {
+        Person.remix 1, :address, 'PersonAddress', :remixable => :addressable, :target_key => [:human_id]
+      }).call()
       Person.auto_migrate!
     end
 
@@ -161,7 +167,9 @@ describe '[dm-is-remixable]' do
       clear_remixed_models 'PersonAddress'
       @source_model       = Person
       @remixed_model_name = 'PersonAddress'
-      Person.remix 1, :address, 'PersonAddress', :remixable => Addressable, :target_key => [:human_id]
+      (@remix_lambda       = lambda {
+        Person.remix 1, :address, 'PersonAddress', :remixable => Addressable, :target_key => [:human_id]
+      }).call()
       Person.auto_migrate!
     end
 
@@ -181,7 +189,9 @@ describe '[dm-is-remixable]' do
       clear_remixed_models 'PersonAddress'
       @source_model       = Person
       @remixed_model_name = 'PersonAddress'
-      Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable
+      (@remix_lambda       = lambda {
+        Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable
+      }).call()
       Person.auto_migrate!
     end
 
@@ -198,7 +208,9 @@ describe '[dm-is-remixable]' do
       clear_remixed_models 'PersonAddress'
       @source_model       = Person
       @remixed_model_name = 'PersonAddress'
-      Person.remix n, :addresses, 'PersonAddress', :remixable => Addressable
+      (@remix_lambda       = lambda {
+        Person.remix n, :addresses, 'PersonAddress', :remixable => Addressable
+      }).call()
       Person.auto_migrate!
     end
 
@@ -218,7 +230,9 @@ describe '[dm-is-remixable]' do
       clear_remixed_models 'PersonAddress'
       @source_model       = Person
       @remixed_model_name = 'PersonAddress'
-      Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable, :target_key => [:human_id]
+      (@remix_lambda       = lambda {
+        Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable, :target_key => [:human_id]
+      }).call()
       Person.auto_migrate!
     end
 
@@ -235,7 +249,9 @@ describe '[dm-is-remixable]' do
       clear_remixed_models 'PersonAddress'
       @source_model       = Person
       @remixed_model_name = 'PersonAddress'
-      Person.remix n, :addresses, 'PersonAddress', :remixable => Addressable, :target_key => [:human_id]
+      (@remix_lambda       = lambda {
+        Person.remix n, :addresses, 'PersonAddress', :remixable => Addressable, :target_key => [:human_id]
+      }).call()
       Person.auto_migrate!
     end
 

@@ -71,7 +71,9 @@ describe '[dm-is-remixable]' do
       @source_model       = Person
       @remixed_model_name = 'PersonReference'
       @target_model       = Link
-      Person.remix n, :references, 'Link', :through => :linkable
+      (@remix_lambda       = lambda {
+        Person.remix n, :references, 'Link', :through => :linkable
+      }).call()
       Person.auto_migrate!
     end
 
@@ -88,7 +90,9 @@ describe '[dm-is-remixable]' do
       @source_model       = Person
       @remixed_model_name = 'PersonReference'
       @target_model       = Link
-      Person.remix n, :references, 'Link', :through => Linkable
+      (@remix_lambda       = lambda {
+        Person.remix n, :references, 'Link', :through => Linkable
+      }).call()
       Person.auto_migrate!
     end
 
@@ -109,13 +113,17 @@ describe '[dm-is-remixable]' do
       @remixed_model_name = 'PersonReferenceLink'
       @target_model       = Link
 
-      Person.remix n, :references, 'Link',
-        :through => [ :person_references, {
-          :remixable  => :linkable,
-          :model      => 'PersonReferenceLink',
-          :source_key => [:human_id],
-          :target_key => [:reference_id]
-        }]
+      (@remix_lambda       = lambda {
+
+        Person.remix n, :references, 'Link',
+          :through => [ :person_references, {
+            :remixable  => :linkable,
+            :model      => 'PersonReferenceLink',
+            :source_key => [:human_id],
+            :target_key => [:reference_id]
+          }]
+
+      }).call()
 
       Person.auto_migrate!
     end
@@ -134,13 +142,17 @@ describe '[dm-is-remixable]' do
       @remixed_model_name = 'PersonReferenceLink'
       @target_model       = Link
 
-      Person.remix n, :references, 'Link',
-        :through => [ :person_references, {
-          :remixable  => Linkable,
-          :model      => 'PersonReferenceLink',
-          :source_key => [:human_id],
-          :target_key => [:reference_id]
-        }]
+      (@remix_lambda       = lambda {
+
+        Person.remix n, :references, 'Link',
+          :through => [ :person_references, {
+            :remixable  => Linkable,
+            :model      => 'PersonReferenceLink',
+            :source_key => [:human_id],
+            :target_key => [:reference_id]
+          }]
+
+      }).call()
 
       Person.auto_migrate!
     end
