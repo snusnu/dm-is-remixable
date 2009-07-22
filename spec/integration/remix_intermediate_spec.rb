@@ -83,6 +83,25 @@ describe '[dm-is-remixable]' do
 
   end
 
+  describe "Remixing an intermediate model with default options and remixable as String" do
+
+    before(:all) do
+      clear_remixed_models 'PersonReference'
+      @source_model       = Person
+      @remixed_model_name = 'PersonReference'
+      @target_model       = Link
+      (@remix_lambda       = lambda {
+        Person.remix n, :references, 'Link', :through => 'Linkable'
+      }).call()
+      Person.auto_migrate!
+    end
+
+    it_should_behave_like 'every remixable'
+    it_should_behave_like 'every intermediate model remix'
+    it_should_behave_like 'every intermediate model remix with default options'
+
+  end
+
   describe "Remixing an intermediate model with default options and remixable as Module" do
 
     before(:all) do
@@ -118,6 +137,35 @@ describe '[dm-is-remixable]' do
         Person.remix n, :references, 'Link',
           :through => [ :person_references, {
             :remixable  => :linkable,
+            :model      => 'PersonReferenceLink',
+            :source_key => [:human_id],
+            :target_key => [:reference_id]
+          }]
+
+      }).call()
+
+      Person.auto_migrate!
+    end
+
+    it_should_behave_like 'every remixable'
+    it_should_behave_like 'every intermediate model remix'
+    it_should_behave_like 'every intermediate model remix with customized options'
+
+  end
+
+  describe "Remixing an intermediate model with customized options and remixable as String" do
+
+    before(:all) do
+      clear_remixed_models 'PersonReferenceLink'
+      @source_model       = Person
+      @remixed_model_name = 'PersonReferenceLink'
+      @target_model       = Link
+
+      (@remix_lambda       = lambda {
+
+        Person.remix n, :references, 'Link',
+          :through => [ :person_references, {
+            :remixable  => 'Linkable',
             :model      => 'PersonReferenceLink',
             :source_key => [:human_id],
             :target_key => [:reference_id]

@@ -22,10 +22,10 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
 
 == Status
 
-  # 105 examples, 0 failures
-  # 94.3%   3 file(s)   235 Lines   159 LOC
+  # 154 examples, 0 failures
+  # 98.2%   3 file(s)   244 Lines   166 LOC
 
-== API ideas (not cut into stone, but promising)
+== API usage (not cut into stone, but promising)
 
   module Addressable
 
@@ -107,6 +107,8 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   #   Person.remix 1, :address, 'PersonAddress', :remixable => :addressable
   #   OR
+  #   Person.remix 1, :address, 'PersonAddress', :remixable => 'Addressable'
+  #   OR
   #   Person.remix 1, :address, 'PersonAddress', :remixable => Addressable
   #
   #   1) Defines the PersonAddress model and includes the Addressable module.
@@ -121,6 +123,12 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   #   Person.remix 1, :address, 'PersonAddress',
   #     :remixable  => :addressable,
+  #     :target_key => [:human_id]
+  #
+  #   OR
+  #
+  #   Person.remix 1, :address, 'PersonAddress',
+  #     :remixable  => 'Addressable',
   #     :target_key => [:human_id]
   #
   #   OR
@@ -141,6 +149,8 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #
   #   Person.remix n, :addresses, 'PersonAddress', :remixable => :addressable
   #   OR
+  #   Person.remix n, :addresses, 'PersonAddress', :remixable => 'Addressable'
+  #   OR
   #   Person.remix n, :addresses, 'PersonAddress', :remixable => Addressable
   #
   #   1) Defines the PersonAddress model and includes the Addressable module.
@@ -160,6 +170,12 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #   OR
   #
   #   Person.remix n, :addresses, 'PersonAddress',
+  #     :remixable  => 'Addressable',
+  #     :target_key => [:human_id]
+  #
+  #   OR
+  #
+  #   Person.remix n, :addresses, 'PersonAddress',
   #     :remixable  => Addressable,
   #     :target_key => [:human_id]
   #
@@ -174,6 +190,8 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   # @example m:m through remixable with default naming conventions
   #
   #   Person.remix n, :references, 'Link', :through => :linkable
+  #   OR
+  #   Person.remix n, :references, 'Link', :through => 'Linkable'
   #   OR
   #   Person.remix n, :references, 'Link', :through => Linkable
   #
@@ -195,6 +213,16 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #   Person.remix n, :references, 'Link',
   #     :through => [ :person_references, {
   #       :remixable  => :linkable,
+  #       :model      => 'PersonReferenceLink', # defaults to 'PersonReference'
+  #       :source_key => [:human_id],           # defaults to :person_id
+  #       :target_key => [:reference_id]        # defaults to :link_id
+  #     }]
+  #
+  #   OR
+  #
+  #   Person.remix n, :references, 'Link',
+  #     :through => [ :person_references, {
+  #       :remixable  => 'Linkable',
   #       :model      => 'PersonReferenceLink', # defaults to 'PersonReference'
   #       :source_key => [:human_id],           # defaults to :person_id
   #       :target_key => [:reference_id]        # defaults to :link_id
@@ -228,6 +256,16 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   #   Person.remix n, :friends, 'Person',
   #     :through => [ :social_contacts, {
   #       :remixable  => :social_contact,
+  #       :model      => 'Friendship',      # defaults to 'PersonReference'
+  #       :source_key => [:person_id],      # defaults to :person_id
+  #       :target_key => [:other_person_id] # defaults to :person_id
+  #     }]
+  #
+  #   OR
+  #
+  #   Person.remix n, :friends, 'Person',
+  #     :through => [ :social_contacts, {
+  #       :remixable  => 'SocialContact',
   #       :model      => 'Friendship',      # defaults to 'PersonReference'
   #       :source_key => [:person_id],      # defaults to :person_id
   #       :target_key => [:other_person_id] # defaults to :person_id

@@ -102,7 +102,7 @@ module DataMapper
           default_intermediate_target_key = Extlib::Inflection.foreign_key(target_model_name)
 
           case through = options.delete(:through)
-          when Symbol, Module
+          when Symbol, String, Module
             intermediate_name       = "#{self.name.snake_case}_#{target_relationship_name}".to_sym
             intermediate_model_name = "#{self.name}#{target_relationship_name.to_s.singular.camel_case}"
             intermediate_source_key = default_intermediate_source_key
@@ -147,9 +147,15 @@ module DataMapper
             raise DuplicateRemixTarget, "The model to remix (#{model_name}) already exists"
           end
 
+          # TODO think about simplyfying this
+
           case remixable
           when Module
             remixable_module = remixable
+          when String
+            remixable        = Extlib::Inflection.demodulize(remixable).singular.snake_case.to_sym
+            remixable_config = DataMapper::Is::Remixable.descendants[remixable]
+            remixable_module = remixable_config[:module] if remixable_config
           when Symbol
             remixable_config = DataMapper::Is::Remixable.descendants[remixable]
             remixable_module = remixable_config[:module] if remixable_config
@@ -187,15 +193,15 @@ module DataMapper
 
           [ :source_key, :target_key ].each do |key|
             if options.key?(key)
-              assert_kind_of "options[#{key.inspect}]", options[key], Enumerable
+              assert_kind_of "options[#{key.inspect}]", options[key], Array
             end
           end
 
           if options.key?(:through)
             through = options[:through]
-            assert_kind_of 'options[:through]', through, Symbol, Module, Enumerable
-            if through.respond_to?(:size)
-              msg = 'options[:through] must either be Symbol, Module or an Enumerable with 2 elements'
+            assert_kind_of 'options[:through]', through, Symbol, String, Module, Array
+            if through.is_a?(Array)
+              msg = 'options[:through] must either be Symbol, String, Module or an Array with 2 elements'
               raise InvalidOptions, msg unless through.size == 2
               # check that the intermediate relationship name is a Symbol
               assert_kind_of 'options[:through]', through.first, Symbol
@@ -203,8 +209,8 @@ module DataMapper
               assert_valid_options_for_remix(options[:through].last)
             end
           else
-            # if no :through is given or we are validating :through options
-            assert_kind_of 'options[:remixable]', options[:remixable], Symbol, Module
+            # if no :through is given or we are recursively validating :through options
+            assert_kind_of 'options[:remixable]', options[:remixable], Symbol, String, Module
           end
 
         end
