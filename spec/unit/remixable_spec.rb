@@ -2,6 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe DataMapper::Is::Remixable do
 
+  include RemixableHelper
+
   it "should not alter the common Module namespace" do
     Module.respond_to?(:property).should   be_false
     Module.respond_to?(:belongs_to).should be_false
@@ -53,7 +55,7 @@ describe DataMapper::Is::Remixable do
 
   it "should store all has declarations" do
     Addressable.has_declarations.size.should == 1
-    Addressable.has_declarations.should include([ 1.0/0, :phone_numbers ])
+    Addressable.has_declarations.should include([ n, :phone_numbers ])
   end
 
 
