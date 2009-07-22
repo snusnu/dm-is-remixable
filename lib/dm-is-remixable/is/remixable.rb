@@ -68,10 +68,6 @@ module DataMapper
 
         end
 
-        def remixables
-          @remixables
-        end
-
 
         private
 
