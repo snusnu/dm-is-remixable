@@ -175,7 +175,7 @@ module DataMapper
         def assert_valid_options_for_remix(options)
 
           if options.key?(:model)
-            assert_kind_of 'options[:model]', options[:model], String, Module
+            assert_kind_of 'options[:model]', options[:model], String
           end
 
           if options.key?(:through)
