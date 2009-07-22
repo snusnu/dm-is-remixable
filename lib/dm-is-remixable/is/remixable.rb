@@ -182,24 +182,26 @@ module DataMapper
             assert_kind_of 'options[:model]', options[:model], String
           end
 
-          if options.key?(:through)
-            assert_kind_of 'options[:through]', options[:through], Symbol, Module, Enumerable
-            if options[:through].respond_to?(:size)
-              msg = 'options[:through] must either be Symbol, Module or an Enumerable with 2 elements'
-              raise InvalidOptions, msg unless options[:through].size == 2
-            end
-          end
-
-          [ :via, :inverse ].each do |key|
-            if options.key?(key)
-              assert_kind_of "options[#{key.inspect}]", options[key], Symbol, Associations::Relationship
-            end
-          end
-
           [ :source_key, :target_key ].each do |key|
             if options.key?(key)
               assert_kind_of "options[#{key.inspect}]", options[key], Enumerable
             end
+          end
+
+          if options.key?(:through)
+            through = options[:through]
+            assert_kind_of 'options[:through]', through, Symbol, Module, Enumerable
+            if through.respond_to?(:size)
+              msg = 'options[:through] must either be Symbol, Module or an Enumerable with 2 elements'
+              raise InvalidOptions, msg unless through.size == 2
+              # check that the intermediate relationship name is a Symbol
+              assert_kind_of 'options[:through]', through.first, Symbol
+              # recursively validate options for :through
+              assert_valid_options_for_remix(options[:through].last)
+            end
+          else
+            # if no :through is given or we are validating :through options
+            assert_kind_of 'options[:remixable]', options[:remixable], Symbol, Module
           end
 
         end
