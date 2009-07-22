@@ -139,14 +139,8 @@ module DataMapper
         def remixable_model(model_name, remixable)
 
           if Object.full_const_defined?(model_name)
-            Object.full_const_get(model_name) rescue false
-          else
-            generate_remixable_model(model_name, remixable)
+            raise ArgumentError, "The model to remix (#{model_name}) already exists"
           end
-
-        end
-
-        def generate_remixable_model(model_name, remixable)
 
           case remixable
           when Module

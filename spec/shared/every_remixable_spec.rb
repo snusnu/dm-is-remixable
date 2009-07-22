@@ -8,8 +8,8 @@ describe "every remixable", :shared => true do
     lambda { Object.full_const_get(@remixed_model_name).auto_migrate! }.should_not raise_error
   end
 
-  it "should not raise when performing the exact same remix more than once" do
-    lambda { 2.times { @remix_lambda.call() } }.should_not raise_error
+  it "should raise when trying to remix the same model more than once" do
+    lambda { 2.times { @remix_lambda.call() } }.should raise_error
   end
 
 end
