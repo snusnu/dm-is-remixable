@@ -15,6 +15,7 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   # Allow to declare class methods and instance methods in the remixable module
   # Allow to remix other remixables inside the remixable module
   # Allow remixing a parent model (i.e. the remixer belongs_to the remixed model)
+  # Add back support for enhance (although it shouldn't be needed that often)
 
 == API ideas (not cut into stone, but promising)
 
