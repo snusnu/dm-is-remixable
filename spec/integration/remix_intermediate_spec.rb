@@ -17,11 +17,54 @@ describe "every intermediate model remix", :shared => true do
 
 end
 
+describe "every intermediate model remix with default options", :shared => true do
+
+  it "should establish m:1 relationships to both source and target in the remixed intermediate model" do
+    source = PersonReference.relationships(:default)[:person]
+    target = PersonReference.relationships(:default)[:link  ]
+    source.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
+    target.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
+    source.target_model.should == Person
+    target.target_model.should == Link
+  end
+
+  it "should establish a 1:m relationship from the remixer to the remixed intermediate model" do
+    relationship = Person.relationships(:default)[:person_references]
+    relationship.kind_of?(DataMapper::Associations::OneToMany::Relationship).should be_true
+    relationship.target_model.should == PersonReference
+  end
+
+end
+
+describe "every intermediate model remix with customized options", :shared => true do
+
+  it "should establish m:1 relationships to both source and target in the remixed intermediate model" do
+    source = PersonReferenceLink.relationships(:default)[:human    ]
+    target = PersonReferenceLink.relationships(:default)[:reference]
+    source.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
+    target.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
+    source.target_model.should == Person
+    target.target_model.should == Link
+  end
+
+  it "should establish a 1:m relationship from the remixer to the remixed intermediate model" do
+    relationship = Person.relationships(:default)[:person_references]
+    relationship.kind_of?(DataMapper::Associations::OneToMany::Relationship).should be_true
+    relationship.target_model.should == PersonReferenceLink
+  end
+
+end
+
+
+# ----------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------
+
+
 describe '[dm-is-remixable]' do
 
   include RemixableHelper
 
-  describe "Remixing an intermediate model with default options" do
+  describe "Remixing an intermediate model with default options and remixable as Symbol" do
 
     before(:all) do
       clear_remixed_models 'PersonReference'
@@ -34,26 +77,31 @@ describe '[dm-is-remixable]' do
 
     it_should_behave_like 'every remixable'
     it_should_behave_like 'every intermediate model remix'
-
-    it "should establish m:1 relationships to both source and target in the remixed intermediate model" do
-      source = PersonReference.relationships(:default)[:person]
-      target = PersonReference.relationships(:default)[:link  ]
-      source.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
-      target.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
-      source.target_model.should == Person
-      target.target_model.should == Link
-    end
-
-    it "should establish a 1:m relationship from the remixer to the remixed intermediate model" do
-      relationship = Person.relationships(:default)[:person_references]
-      relationship.kind_of?(DataMapper::Associations::OneToMany::Relationship).should be_true
-      relationship.target_model.should == PersonReference
-    end
+    it_should_behave_like 'every intermediate model remix with default options'
 
   end
 
+  describe "Remixing an intermediate model with default options and remixable as Module" do
 
-  describe "Remixing an intermediate model with customized options" do
+    before(:all) do
+      clear_remixed_models 'PersonReference'
+      @source_model       = Person
+      @remixed_model_name = 'PersonReference'
+      @target_model       = Link
+      Person.remix n, :references, 'Link', :through => Linkable
+      Person.auto_migrate!
+    end
+
+    it_should_behave_like 'every remixable'
+    it_should_behave_like 'every intermediate model remix'
+    it_should_behave_like 'every intermediate model remix with default options'
+
+  end
+
+  # ----------------------------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------------------------------------
+
+  describe "Remixing an intermediate model with customized options and remixable as Symbol" do
 
     before(:all) do
       clear_remixed_models 'PersonReferenceLink'
@@ -74,21 +122,33 @@ describe '[dm-is-remixable]' do
 
     it_should_behave_like 'every remixable'
     it_should_behave_like 'every intermediate model remix'
-
-    it "should establish m:1 relationships to both source and target in the remixed intermediate model" do
-      source = PersonReferenceLink.relationships(:default)[:human    ]
-      target = PersonReferenceLink.relationships(:default)[:reference]
-      source.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
-      target.kind_of?(DataMapper::Associations::ManyToOne::Relationship).should be_true
-      source.target_model.should == Person
-      target.target_model.should == Link
-    end
-
-    it "should establish a 1:m relationship from the remixer to the remixed intermediate model" do
-      relationship = Person.relationships(:default)[:person_references]
-      relationship.kind_of?(DataMapper::Associations::OneToMany::Relationship).should be_true
-      relationship.target_model.should == PersonReferenceLink
-    end
+    it_should_behave_like 'every intermediate model remix with customized options'
 
   end
+
+  describe "Remixing an intermediate model with customized options and remixable as Module" do
+
+    before(:all) do
+      clear_remixed_models 'PersonReferenceLink'
+      @source_model       = Person
+      @remixed_model_name = 'PersonReferenceLink'
+      @target_model       = Link
+
+      Person.remix n, :references, 'Link',
+        :through => [ :person_references, {
+          :remixable  => Linkable,
+          :model      => 'PersonReferenceLink',
+          :source_key => [:human_id],
+          :target_key => [:reference_id]
+        }]
+
+      Person.auto_migrate!
+    end
+
+    it_should_behave_like 'every remixable'
+    it_should_behave_like 'every intermediate model remix'
+    it_should_behave_like 'every intermediate model remix with customized options'
+
+  end
+
 end

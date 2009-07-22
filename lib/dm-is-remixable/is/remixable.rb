@@ -97,7 +97,7 @@ module DataMapper
           default_intermediate_target_key = Extlib::Inflection.foreign_key(target_model_name)
 
           case through = options.delete(:through)
-          when Symbol
+          when Symbol, Module
             intermediate_name       = "#{self.name.snake_case}_#{target_relationship_name}".to_sym
             intermediate_model_name = "#{self.name}#{target_relationship_name.to_s.singular.camel_case}"
             intermediate_source_key = default_intermediate_source_key
@@ -150,8 +150,15 @@ module DataMapper
 
         def generate_remixable_model(model_name, remixable)
 
-          remixable_config = DataMapper::Is::Remixable.descendants[remixable]
-          remixable_module = remixable_config[:module] if remixable_config
+          case remixable
+          when Module
+            remixable_module = remixable
+          when Symbol
+            remixable_config = DataMapper::Is::Remixable.descendants[remixable]
+            remixable_module = remixable_config[:module] if remixable_config
+          else
+            raise ArgumentError, 'remixable must either be a Symbol or a Module'
+          end
 
           raise ArgumentError, "#{remixable} is not remixable" unless remixable_module
 
