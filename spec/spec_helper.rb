@@ -46,9 +46,12 @@ module RemixableHelper
 
   def clear_remixed_models(*models)
     models.each do |model|
-      Object.send(:remove_const, model) if Object.const_defined?(model)
+      # TODO think about removing a namespaced constant
+      Object.send(:remove_const, model) if Object.full_const_defined?(model)
     end
   end
+
+  alias :clear_remixed_model :clear_remixed_models
 
   def n
     1.0/0

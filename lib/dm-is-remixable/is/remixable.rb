@@ -2,9 +2,10 @@ module DataMapper
   module Is
     module Remixable
 
-      class DuplicateRemixTarget < ArgumentError; end
-      class InvalidRemixable     < ArgumentError; end
       class InvalidOptions       < ArgumentError; end
+      class InvalidRemixable     < ArgumentError; end
+      class UnknownRemixable     < ArgumentError; end
+      class DuplicateRemixTarget < ArgumentError; end
 
       include Extlib::Assertions
 
@@ -114,7 +115,7 @@ module DataMapper
             intermediate_target_key = through.last[:target_key].first.to_s || default_intermediate_target_key
             remixable               = through.last[:remixable]
           else
-            raise ArgumentError, '+options[:through]+ must either be a Symbol or an Array'
+            raise InvalidOptions, '+options[:through]+ must either be a Symbol or an Array'
           end
 
           intermediate_model  = remixable_model(intermediate_model_name, remixable)
@@ -156,7 +157,9 @@ module DataMapper
             raise InvalidRemixable, 'remixable must either be a Symbol or a Module'
           end
 
-          raise InvalidRemixable, "The module #{remixable} is not remixable" unless remixable_module
+          unless remixable_module
+            raise UnknownRemixable, "The module #{remixable} is not remixable"
+          end
 
           klass = Class.new do
             include DataMapper::Resource
