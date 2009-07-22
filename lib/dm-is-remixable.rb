@@ -10,4 +10,3 @@ require dir / 'remixable'
 # activate the plugin
 DataMapper::Model.append_extensions(DataMapper::Is::Remixable)
 DataMapper::Model.append_extensions(DataMapper::Is::Remixable::Remixer)
-DataMapper::Model.append_extensions(DataMapper::Is::Remixable::Support)

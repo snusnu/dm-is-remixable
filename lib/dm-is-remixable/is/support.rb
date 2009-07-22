@@ -6,22 +6,5 @@ class Object
 
 end
 
-# TODO find out if this is still needed
-# Extlib::Inflection.rule 'ess', 'esses'
-
-
-module DataMapper
-  module Is
-    module Remixable
-
-      module Support
-
-        def is_remixable?
-          @is_remixable || false
-        end
-
-      end
-
-    end
-  end
-end
+# TODO find out why this is needed
+Extlib::Inflection.rule 'ess', 'esses'
