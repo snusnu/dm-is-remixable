@@ -20,6 +20,11 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   # Add back support for enhance (although it shouldn't be needed that often)
   # API documentation
 
+== Status
+
+  # 105 examples, 0 failures
+  # 94.3%   3 file(s)   235 Lines   159 LOC
+
 == API ideas (not cut into stone, but promising)
 
   module Addressable
