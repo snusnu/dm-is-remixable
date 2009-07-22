@@ -36,6 +36,7 @@ module DataMapper
 
       module Remixer
 
+        # TODO handle storage_name option for remixed model
         # TODO think about handling different repositories
         def remix(cardinality, relationship_name, *args)
 
