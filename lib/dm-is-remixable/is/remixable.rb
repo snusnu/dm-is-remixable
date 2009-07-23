@@ -62,8 +62,7 @@ module DataMapper
 
           options = {
             :target_key   => Extlib::Inflection.foreign_key(source_model_name),
-            :storage_name => Extlib::Inflection.tableize(target_model_name),
-            :unique       => false
+            :storage_name => Extlib::Inflection.tableize(target_model_name)
           }.merge!(options)
 
           if options[:through]
@@ -84,7 +83,12 @@ module DataMapper
           target_model = remixable_model(target_model_name, options.delete(:remixable))
           target_key   = options[:target_key].first.to_sym
 
-          if options.delete(:unique) || cardinality == 1
+          unique = options.delete(:unique)
+
+          # default to true if cardinality is 1 and :unique option was not explicitly specified
+          unique = (cardinality == 1 && unique.nil?) ? true : unique
+
+          if unique
             target_model.property target_key, Integer, :nullable => false, :unique => true, :unique_index => true
           end
 
@@ -98,36 +102,47 @@ module DataMapper
         def remix_intermediate_model(cardinality, target_relationship_name, target_model_name, options)
 
           source_model                    = self
+
           default_intermediate_source_key = Extlib::Inflection.foreign_key(source_model.name)
           default_intermediate_target_key = Extlib::Inflection.foreign_key(target_model_name)
+          default_intermediate_name       = "#{self.name.snake_case}_#{target_relationship_name}".to_sym
+          default_intermediate_model_name = "#{default_intermediate_name.to_s.singular.camel_case}"
 
           case through = options.delete(:through)
           when Symbol, String, Module
-            intermediate_name       = "#{self.name.snake_case}_#{target_relationship_name}".to_sym
-            intermediate_model_name = "#{self.name}#{target_relationship_name.to_s.singular.camel_case}"
+            intermediate_name       = default_intermediate_name
+            intermediate_model_name = default_intermediate_model_name
             intermediate_source_key = default_intermediate_source_key
             intermediate_target_key = default_intermediate_target_key
             remixable               = through
           when Array
             intermediate_name       = through.first
-            intermediate_model_name = through.last[:model]
-            intermediate_source_key = through.last[:source_key].first.to_s || default_intermediate_source_key
-            intermediate_target_key = through.last[:target_key].first.to_s || default_intermediate_target_key
-            remixable               = through.last[:remixable]
+            through                 = through.last
+            intermediate_model_name = through[:model]                 || default_intermediate_model_name
+            intermediate_source_key = through[:source_key].first.to_s || default_intermediate_source_key
+            intermediate_target_key = through[:target_key].first.to_s || default_intermediate_target_key
+            remixable               = through[:remixable]
           else
-            raise InvalidOptions, '+options[:through]+ must either be a Symbol or an Array'
+            msg = "+options[:through]+ must be Symbol, String, Module or Array but was #{through.class}"
+            raise InvalidOptions, msg
           end
 
           intermediate_model  = remixable_model(intermediate_model_name, remixable)
           intermediate_source = intermediate_source_key.gsub('_id', '').to_sym
           intermediate_target = intermediate_target_key.gsub('_id', '').to_sym
 
-          # add properties and associations to intermediate model
+          # add properties and associations to the intermediate model
 
-          if options[:unique]
-            intermediate_model.property intermediate_source_key.to_sym, Integer, :nullable => false, :key => true
-            intermediate_model.property intermediate_target_key.to_sym, Integer, :nullable => false, :key => true
+          intermediate_fk_options = if intermediate_model.key.empty?
+            { :nullable => false, :key => true }
+          elsif options[:unique]
+            { :nullable => false, :unique => true, :unique_index => true }
+          else
+            { :nullable => false }
           end
+
+          intermediate_model.property intermediate_source_key.to_sym, Integer, intermediate_fk_options
+          intermediate_model.property intermediate_target_key.to_sym, Integer, intermediate_fk_options
 
           intermediate_model.belongs_to intermediate_source, source_model
           intermediate_model.belongs_to intermediate_target, target_model_name

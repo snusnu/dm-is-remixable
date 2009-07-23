@@ -17,13 +17,13 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   # Think about how best to include/extend functionality into the remixing model
   # Allow remixing a parent model (i.e. the remixer belongs_to the remixed model)
   #   This can easily be implemented as an option, however I'm not sure how to name it
-  # Add back support for enhance (although it shouldn't be needed that often)
+  # Add back support for enhance (although it shouldn't be needed that often anymore)
   # API documentation
 
 == Status
 
-  # 154 examples, 0 failures
-  # 98.2%   3 file(s)   244 Lines   166 LOC
+  # 136 examples, 0 failures
+  # 97.2%   3 file(s)   259 Lines   176 LOC
 
 == API usage (not cut into stone, but promising)
 
@@ -71,6 +71,8 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
     property :id,   Serial
     property :name, String
 
+    has n, :person_addresses
+
   end
 
   class PhoneNumber
@@ -79,6 +81,8 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
 
     property :id,     Serial
     property :number, String
+
+    belongs_to :person_address
 
   end
 
