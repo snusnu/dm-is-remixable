@@ -9,16 +9,17 @@ A rewrite of the wonderful dm-is-remixable[http://github.com/datamapper/dm-more/
   # Full support for remixing models as intermediates in m:m relationships (multiple times in the same class)
   # A small, readable and easy to understand codebase.
 
-== Goals (in no particular order)
+== Goals (roughly in that order)
 
   # [NEEDS SPECS] Allow to pass additional query options to the generated relationships to/through remixables
   # [NEEDS SPECS] Allow to remix other remixables inside the remixable module
-  # Think about how best to include/extend functionality into the remixed model
-  # Think about how best to include/extend functionality into the remixing model
+  # Think about how best to include/extend functionality into the remixed and the remixing model
+  # Allow to remix target or intermediate models without establishing any relationships
+  #   This will allow to naturally define different relationships to the same remixed model without calling remix
+  # Full support for CPKs (by allowing to declare full FK property options in :source_key and :target_key options)
   # Allow remixing a parent model (i.e. the remixer belongs_to the remixed model)
-  #   This can easily be implemented as an option, however I'm not sure how to name it
   # Add back support for enhance (although it shouldn't be needed that often anymore)
-  # API documentation
+  # think about possibilities to integrate with Cory O'Daniel's dm-property-manager (to get that polymorphic feeling)
 
 == Status
 
