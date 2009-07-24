@@ -79,6 +79,10 @@ module DataMapper
         # TODO think about supporting CPKs
         def remix_target_model(cardinality, target_relationship_name, target_model_name, options)
 
+          if cardinality == n && options[:unique]
+            raise InvalidOptions, 'cardinality "n" in combination with :unique => true makes no sense'
+          end
+
           source_model = self
           target_model = remixable_model(target_model_name, options.delete(:remixable))
           target_key   = options[:target_key].first.to_sym
