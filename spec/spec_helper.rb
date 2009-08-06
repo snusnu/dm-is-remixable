@@ -48,6 +48,7 @@ module RemixableHelper
     models.each do |model|
       # TODO think about removing a namespaced constant
       Object.send(:remove_const, model) if Object.full_const_defined?(model)
+      DataMapper::Model.descendants.delete(model)
     end
   end
 
