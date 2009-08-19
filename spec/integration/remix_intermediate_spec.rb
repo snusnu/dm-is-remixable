@@ -19,7 +19,7 @@ describe '[dm-is-remixable]' do
         @target_model  = Link
         @remixed_model = PersonReference
 
-        #Person.auto_migrate!
+        Person.auto_migrate!
       end
 
       it_should_behave_like 'every remixable'

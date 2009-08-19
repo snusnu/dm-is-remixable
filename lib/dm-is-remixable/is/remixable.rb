@@ -153,8 +153,11 @@ module DataMapper
 
           # establish relationships to intermediate and target model
 
-          self.has cardinality, intermediate_name, intermediate_model, options
-          self.has cardinality, target_relationship_name, target_model_name, :through => intermediate_name
+          # merge all other given options with the inferred options for the target relationship
+          target_relationship_options = options.merge!(:through => intermediate_name, :via => intermediate_target)
+
+          self.has cardinality, intermediate_name, intermediate_model
+          self.has cardinality, target_relationship_name, target_model_name, target_relationship_options
 
           # TODO think about establishing the inverse m:m too
 
