@@ -61,8 +61,7 @@ module DataMapper
           target_model_name ||= options.delete(:model)
 
           options = {
-            :target_key   => Extlib::Inflection.foreign_key(source_model_name),
-            :storage_name => Extlib::Inflection.tableize(target_model_name)
+            :target_key => [ Extlib::Inflection.foreign_key(source_model_name).to_sym ]
           }.merge!(options)
 
           if options[:through]
@@ -85,7 +84,7 @@ module DataMapper
 
           source_model = self
           target_model = remixable_model(target_model_name, options.delete(:remixable))
-          target_key   = options[:target_key].first.to_sym
+          target_key   = options.delete(:target_key)
 
           unique = options.delete(:unique)
 
@@ -93,10 +92,12 @@ module DataMapper
           unique = (cardinality == 1 && unique.nil?) ? true : unique
 
           if unique
-            target_model.property target_key, Integer, :nullable => false, :unique => true, :unique_index => true
+            # TODO think about supporting CPKs
+            target_model.property target_key.first, Integer, :nullable => false, :unique => true, :unique_index => true
           end
 
-          source = target_key.to_s.gsub('_id', '').to_sym
+          # TODO think about supporting CPKs
+          source = target_key.first.to_s.gsub('_id', '').to_sym
           target_model.belongs_to source, source_model, :source_key => target_key
           source_model.has cardinality, target_relationship_name, target_model, options
 
@@ -153,7 +154,7 @@ module DataMapper
 
           # establish relationships to intermediate and target model
 
-          # merge all other given options with the inferred options for the target relationship
+          # merge all other given options with the options for the target relationshi
           target_relationship_options = options.merge!(:through => intermediate_name, :via => intermediate_target)
 
           self.has cardinality, intermediate_name, intermediate_model
